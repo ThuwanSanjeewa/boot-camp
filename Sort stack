@@ -1,0 +1,53 @@
+import java.util.Stack;
+
+public class Application {
+	
+	//Sort given integer stack to descending order
+	public static Stack<Integer> sortStack(Stack<Integer> originalStack){		
+		Stack<Integer> tempStack = new Stack<Integer>();
+		int tempElement;
+		
+		while(!originalStack.isEmpty()){
+			if(tempStack.isEmpty()){
+				tempStack.push(originalStack.pop());
+			}else{
+				if(tempStack.peek()==originalStack.peek()){					
+					tempStack.push(originalStack.pop());
+				}else if((tempStack.peek())>(originalStack.peek())){
+					tempStack.push(originalStack.pop());
+				}else{
+					tempElement = (int)originalStack.pop();
+					while((!tempStack.isEmpty())&&(tempElement>tempStack.peek()) ){
+						originalStack.push(tempStack.pop());
+					}
+					tempStack.push(tempElement);
+				}
+			}
+		}
+		return tempStack;
+	}
+	
+	public static void main(String[] args) {
+		Stack<Integer> stack = new Stack<Integer>();
+		stack.push(3);
+		stack.push(1);
+		stack.push(5);
+		stack.push(-10);
+		stack.push(2);
+		stack.push(7);
+		stack.push(0);
+		stack.push(4);
+		stack.push(-6);
+		stack.push(9);	
+		stack.push(0);
+		stack.push(6);
+		stack.push(-9);
+		
+		stack = sortStack(stack);	
+		
+		for(Integer e : stack){
+			System.out.print(e + ",");
+		}
+	}
+
+}
