@@ -1,0 +1,67 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Stack;
+
+
+public class Application {
+	
+	private static final String REGEX = "[a-zA-Z0-9]*";
+	
+	//Method for validate bracket closing
+	public static boolean validateBrackets(String bracketSequence){
+		boolean result=false;
+		if(bracketSequence==""||bracketSequence==null){
+			result = true;
+		}else{
+			Stack<Character> charStack = new Stack<Character>();
+			
+			for(int i=0;i<bracketSequence.length();i++){
+				char current = bracketSequence.charAt(i);
+				char last;
+				if((current == '{')||(current == '[')||(current == '(')){					
+					charStack.push(current);
+				}if((current == '}')||(current == ']')||(current == ')')){					
+					if(!charStack.isEmpty()){						
+						last = charStack.peek();
+						if((current=='}' && last=='{')|| (current==']' && last=='[')||(current==')' && last=='(') ){
+							charStack.pop();
+							result= true;							
+						}else{
+							result=false;
+						}						
+					}else{
+						result = false;
+					}
+				}				
+			}if(!charStack.isEmpty()){
+				result=false;
+			}			
+		}
+		return result;
+	}
+	
+	public static void main(String[] args) throws IOException{
+		
+		//Read the file
+		FileReader fileReader = new FileReader("Sample.txt");
+		
+		//Create buffered reader
+		BufferedReader br = new BufferedReader(fileReader);
+		String readLine = "";
+		String brackets = "";
+		
+		while((readLine = br.readLine()) !=null){
+			brackets = brackets+readLine.replaceAll(REGEX, ""); 
+		}
+		br.close();
+		
+		//Call validate method
+		if(validateBrackets(brackets)){
+			System.out.println("Your code is valid");
+		}else{
+			System.out.println("Your code is not valid");
+		}
+		
+	}
+}
